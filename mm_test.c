@@ -104,9 +104,9 @@ newlibc_memcmp (const void *m1,
 
 int musl_memcmp(const void *vl, const void *vr, size_t n)
 {
-	const unsigned char *l=vl, *r=vr;
-	for (; n && *l == *r; n--, l++, r++);
-	return n ? *l-*r : 0;
+    const unsigned char *l=vl, *r=vr;
+    for (; n && *l == *r; n--, l++, r++);
+    return n ? *l-*r : 0;
 }
 
 //--------------------------------------------------
@@ -179,7 +179,7 @@ memcmp_common_alignment (long int srcp1, long int srcp2, size_t len)
       goto do2;
     case 0:
       if (OP_T_THRES <= 3 * OPSIZ && len == 0)
-	return 0;
+    return 0;
       a0 = ((op_t *) srcp1)[0];
       b0 = ((op_t *) srcp2)[0];
       goto do3;
@@ -190,7 +190,7 @@ memcmp_common_alignment (long int srcp1, long int srcp2, size_t len)
       srcp2 += OPSIZ;
       len -= 1;
       if (OP_T_THRES <= 3 * OPSIZ && len == 0)
-	goto do0;
+    goto do0;
       /* Fall through.  */
     }
 
@@ -199,25 +199,25 @@ memcmp_common_alignment (long int srcp1, long int srcp2, size_t len)
       a0 = ((op_t *) srcp1)[0];
       b0 = ((op_t *) srcp2)[0];
       if (a1 != b1)
-	return CMP_LT_OR_GT (a1, b1);
+    return CMP_LT_OR_GT (a1, b1);
 
     do3:
       a1 = ((op_t *) srcp1)[1];
       b1 = ((op_t *) srcp2)[1];
       if (a0 != b0)
-	return CMP_LT_OR_GT (a0, b0);
+    return CMP_LT_OR_GT (a0, b0);
 
     do2:
       a0 = ((op_t *) srcp1)[2];
       b0 = ((op_t *) srcp2)[2];
       if (a1 != b1)
-	return CMP_LT_OR_GT (a1, b1);
+    return CMP_LT_OR_GT (a1, b1);
 
     do1:
       a1 = ((op_t *) srcp1)[3];
       b1 = ((op_t *) srcp2)[3];
       if (a0 != b0)
-	return CMP_LT_OR_GT (a0, b0);
+    return CMP_LT_OR_GT (a0, b0);
 
       srcp1 += 4 * OPSIZ;
       srcp2 += 4 * OPSIZ;
@@ -274,7 +274,7 @@ memcmp_not_common_alignment (long int srcp1, long int srcp2, size_t len)
       goto do2;
     case 0:
       if (OP_T_THRES <= 3 * OPSIZ && len == 0)
-	return 0;
+    return 0;
       a3 = ((op_t *) srcp1)[0];
       a0 = ((op_t *) srcp1)[1];
       b0 = ((op_t *) srcp2)[0];
@@ -288,7 +288,7 @@ memcmp_not_common_alignment (long int srcp1, long int srcp2, size_t len)
       srcp2 += 1 * OPSIZ;
       len -= 1;
       if (OP_T_THRES <= 3 * OPSIZ && len == 0)
-	goto do0;
+    goto do0;
       /* Fall through.  */
     }
 
@@ -298,28 +298,28 @@ memcmp_not_common_alignment (long int srcp1, long int srcp2, size_t len)
       b0 = ((op_t *) srcp2)[0];
       x = MERGE(a2, shl, a3, shr);
       if (x != b3)
-	return CMP_LT_OR_GT (x, b3);
+    return CMP_LT_OR_GT (x, b3);
 
     do3:
       a1 = ((op_t *) srcp1)[1];
       b1 = ((op_t *) srcp2)[1];
       x = MERGE(a3, shl, a0, shr);
       if (x != b0)
-	return CMP_LT_OR_GT (x, b0);
+    return CMP_LT_OR_GT (x, b0);
 
     do2:
       a2 = ((op_t *) srcp1)[2];
       b2 = ((op_t *) srcp2)[2];
       x = MERGE(a0, shl, a1, shr);
       if (x != b1)
-	return CMP_LT_OR_GT (x, b1);
+    return CMP_LT_OR_GT (x, b1);
 
     do1:
       a3 = ((op_t *) srcp1)[3];
       b3 = ((op_t *) srcp2)[3];
       x = MERGE(a1, shl, a2, shr);
       if (x != b2)
-	return CMP_LT_OR_GT (x, b2);
+    return CMP_LT_OR_GT (x, b2);
 
       srcp1 += 4 * OPSIZ;
       srcp2 += 4 * OPSIZ;
@@ -348,29 +348,29 @@ glibc_memcmp (const void *s1, const void *s2, size_t len)
   if (len >= OP_T_THRES)
     {
       /* There are at least some bytes to compare.  No need to test
-	 for LEN == 0 in this alignment loop.  */
+     for LEN == 0 in this alignment loop.  */
       while (srcp2 % OPSIZ != 0)
-	{
-	  a0 = ((byte *) srcp1)[0];
-	  b0 = ((byte *) srcp2)[0];
-	  srcp1 += 1;
-	  srcp2 += 1;
-	  res = a0 - b0;
-	  if (res != 0)
-	    return res;
-	  len -= 1;
-	}
+    {
+      a0 = ((byte *) srcp1)[0];
+      b0 = ((byte *) srcp2)[0];
+      srcp1 += 1;
+      srcp2 += 1;
+      res = a0 - b0;
+      if (res != 0)
+        return res;
+      len -= 1;
+    }
 
       /* SRCP2 is now aligned for memory operations on `op_t'.
-	 SRCP1 alignment determines if we can do a simple,
-	 aligned compare or need to shuffle bits.  */
+     SRCP1 alignment determines if we can do a simple,
+     aligned compare or need to shuffle bits.  */
 
       if (srcp1 % OPSIZ == 0)
-	res = memcmp_common_alignment (srcp1, srcp2, len / OPSIZ);
+    res = memcmp_common_alignment (srcp1, srcp2, len / OPSIZ);
       else
-	res = memcmp_not_common_alignment (srcp1, srcp2, len / OPSIZ);
+    res = memcmp_not_common_alignment (srcp1, srcp2, len / OPSIZ);
       if (res != 0)
-	return res;
+    return res;
 
       /* Number of bytes remaining in the interval [0..OPSIZ-1].  */
       srcp1 += len & -OPSIZ;
@@ -387,12 +387,283 @@ glibc_memcmp (const void *s1, const void *s2, size_t len)
       srcp2 += 1;
       res = a0 - b0;
       if (res != 0)
-	return res;
+    return res;
       len -= 1;
     }
 
   return 0;
 }
+
+#ifndef __KERNEL__
+
+// Taken from https://gist.github.com/karthick18/1361842
+#include <emmintrin.h>
+
+static int __sse_memcmp_tail(const uint16_t *a, const uint16_t *b, int len)
+{
+    switch(len)
+    {
+    case 8:
+        if(*a++ != *b++) return -1;
+    case 7:
+        if(*a++ != *b++) return -1;
+    case 6:
+        if(*a++ != *b++) return -1;
+    case 5:
+        if(*a++ != *b++) return -1;
+    case 4:
+        if(*a++ != *b++) return -1;
+    case 3:
+        if(*a++ != *b++) return -1;
+    case 2:
+        if(*a++ != *b++) return -1;
+    case 1:
+        if(*a != *b) return -1;
+    }
+    return 0;
+}
+
+static int __sse_memcmp(const uint16_t *a, const uint16_t *b, int half_words)
+{
+    int i = 0;
+    int len = half_words;
+    int aligned_a = 0, aligned_b = 0;
+    if(!len) return 0;
+    if(!a && !b) return 0;
+   if(!a || !b) return -1;
+    if( (unsigned long) a & 1 ) return -1;
+    if( (unsigned long) b & 1 ) return -1;
+    aligned_a = ( (unsigned long)a & (sizeof(__m128i)-1) );
+    aligned_b = ( (unsigned long)b & (sizeof(__m128i)-1) );
+    if(aligned_a != aligned_b) return -1; /* both has to be unaligned on the same boundary or aligned */
+    if(aligned_a)
+    {
+        while( len && 
+               ( (unsigned long) a & ( sizeof(__m128i)-1) ) )
+        {
+            if(*a++ != *b++) return -1;
+            --len; 
+        }
+    }
+    if(!len) return 0;
+    while( len && !(len & 7 ) )
+    {
+        __m128i x = _mm_load_si128( (__m128i*)&a[i]);
+        __m128i y = _mm_load_si128( (__m128i*)&b[i]);
+        /*
+         * _mm_cmpeq_epi16 returns 0xffff for each of the 8 half words when it matches
+         */
+        __m128i cmp = _mm_cmpeq_epi16(x, y);
+        /* 
+         * _mm_movemask_epi8 creates a 16 bit mask with the MSB for each of the 16 bytes of cmp
+         */
+        if ( (uint16_t)_mm_movemask_epi8(cmp) != 0xffffU) return -1; 
+        len -= 8;
+        i += 8;
+    }
+    return __sse_memcmp_tail(&a[i], &b[i], len);
+}
+
+#if 1
+// DPDK
+#include <immintrin.h>
+
+#define likely(condition) __builtin_expect(condition, 1)
+#define unlikely(condition) __builtin_expect(condition, 0)
+
+static inline int
+rte_cmp16(const uint8_t *src_1, const uint8_t *src_2)
+{
+    __m128i xmm0;
+    __m128i xmm1;
+    __m128i vcmp;
+    uint32_t vmask;
+
+    xmm0 = _mm_loadu_si128((const __m128i *)src_1);
+    xmm1 = _mm_loadu_si128((const __m128i *)src_2);
+
+    vcmp = _mm_cmpeq_epi16(xmm0, xmm1);
+    vmask = _mm_movemask_epi8(vcmp);
+    return (!(vmask == 0xffffU));
+}
+
+/**
+ * Compare 32 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline int
+rte_cmp32(const uint8_t *src_1, const uint8_t *src_2)
+{
+    __m256i xmm0;
+    __m256i xmm1;
+    __m256i vcmp;
+    uint64_t vmask;
+
+    xmm0 = _mm256_loadu_si256((const __m256i *)src_1);
+    xmm1 = _mm256_loadu_si256((const __m256i *)src_2);
+
+    vcmp = _mm256_cmpeq_epi32(xmm0, xmm1);
+    vmask = _mm256_movemask_epi8(vcmp);
+    return (!(vmask == 0xffffffffU));
+}
+
+/**
+ * Compare 64 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline int
+rte_cmp64(const uint8_t *src_1, const uint8_t *src_2)
+{
+    int ret;
+
+    ret = rte_cmp32(src_1 + 0 * 32, src_2 + 0 * 32);
+
+    if (likely(ret == 0))
+        ret = rte_cmp32(src_1 + 1 * 32, src_2 + 1 * 32);
+
+    return ret;
+}
+
+/**
+ * Compare 128 bytes between two locations.
+ * Locations should not overlap.
+ */
+static inline int
+rte_cmp128(const uint8_t *src_1, const uint8_t *src_2)
+{
+    int ret;
+
+    ret = rte_cmp32(src_1 + 0 * 32, src_2 + 0 * 32);
+
+    if (likely(ret == 0))
+        ret = rte_cmp32(src_1 + 1 * 32, src_2 + 1 * 32);
+
+    if (likely(ret == 0))
+        ret = rte_cmp32(src_1 + 2 * 32, src_2 + 2 * 32);
+
+    if (likely(ret == 0))
+        ret = rte_cmp32(src_1 + 3 * 32, src_2 + 3 * 32);
+
+    return ret;
+}
+
+static inline int
+rte_memcmp_remainder(const void *_src_1, const void *_src_2, size_t n)
+{
+    uintptr_t src_1u = (uintptr_t)_src_1;
+    uintptr_t src_2u = (uintptr_t)_src_2;
+
+    int ret_1 = 1, ret_2 = 1, ret_4 = 1, ret_8 = 1;
+
+    /**
+     * Compare less than 16 bytes
+     */
+    if (n & 0x01) {
+        ret_1 = (*(uint8_t *)src_1u ==
+                *(const uint8_t *)src_2u);
+        src_1u = (uintptr_t)((const uint8_t *)src_1u + 1);
+        src_2u = (uintptr_t)((const uint8_t *)src_2u + 1);
+    }
+    if (n & 0x02) {
+        ret_2 = (*(uint16_t *)src_1u ==
+                *(const uint16_t *)src_2u);
+        src_1u = (uintptr_t)((const uint16_t *)src_1u + 1);
+        src_2u = (uintptr_t)((const uint16_t *)src_2u + 1);
+    }
+    if (n & 0x04) {
+        ret_4 = (*(uint32_t *)src_1u ==
+                *(const uint32_t *)src_2u);
+        src_1u = (uintptr_t)((const uint32_t *)src_1u + 1);
+        src_2u = (uintptr_t)((const uint32_t *)src_2u + 1);
+    }
+    if (n & 0x08) {
+        ret_8 = (*(uint64_t *)src_1u ==
+                *(const uint64_t *)src_2u);
+    }
+    return (!(ret_1 && ret_2 && ret_4 && ret_8));
+}
+
+static inline int
+rte_memcmp(const void *_src_1, const void *_src_2, size_t n)
+{
+    const uint8_t *src_1 = (const uint8_t *)_src_1;
+    const uint8_t *src_2 = (const uint8_t *)_src_2;
+    int ret;
+
+    /**
+     * Compare less than 16 bytes
+     */
+    if (n < 16)
+        return rte_memcmp_remainder(_src_1, _src_2, n);
+
+    /**
+     * Fast way when compare size exceeds 16 bytes
+     */
+    if (n <= 32) {
+        if (likely(n & 0x20))
+            ret = rte_cmp32(src_1, src_2);
+        else {
+            ret = rte_cmp16(src_1 - 16 + n, src_2 - 16 + n);
+            if (likely(ret == 0))
+                ret = rte_memcmp_remainder(src_1 - 16 + n,
+                        src_2 - 16 + n, n - 16);
+        }
+        return ret;
+    }
+
+    if (n <= 48) {
+        if (likely(n & 0x30)) {
+            ret = rte_cmp32(src_1, src_2);
+            if (likely(ret == 0))
+                ret = rte_cmp16(src_1 - 32 + n, src_2 - 32 + n);
+        } else {
+            ret = rte_cmp32(src_1, src_2);
+            if (likely(ret == 0))
+                ret = rte_memcmp_remainder(src_1 - 32 + n,
+                        src_2 - 32 + n, n - 32);
+        }
+        return ret;
+    }
+
+    if (n <= 64) {
+        if (likely(n & 0x40))
+            ret = rte_cmp64(src_1, src_2);
+        else {
+            ret = rte_cmp32(src_1 - 32 + n, src_2 - 32 + n);
+            if (likely(ret == 0))
+                ret = rte_cmp16(src_1 - 32 + n,
+                        src_2 - 32 + n);
+
+            if (likely(ret == 0))
+                ret = rte_memcmp_remainder(src_1 - 48 + n,
+                        src_2 - 48 + n, n - 48);
+        }
+        return ret;
+    }
+
+    if (n <= 128) {
+        if (likely(n & 0x80))
+            ret = rte_cmp128(src_1, src_2);
+        else {
+            ret = rte_cmp64(src_1, src_2);
+            if (likely(ret == 0))
+                ret = rte_cmp32(src_1 - 64 + n, src_2 - 64 + n);
+
+            if (likely(ret == 0))
+                ret = rte_cmp16(src_1 - 96 + n, src_2 - 96 + n);
+
+            if (likely(ret == 0))
+                ret = rte_memcmp_remainder(src_1 - 112 + n,
+                        src_2 - 112 + n, n - 112);
+        }
+        return ret;
+    }
+
+    return 0;
+}
+#endif
+
+#endif // __KERNEL__
 
 //--------------------------------------------------
 
@@ -405,7 +676,8 @@ void put_things_in_string(char* str, size_t n){
 }
 
 void test(void){
-    const uint64_t nb_op = 1000000000;
+    // const uint64_t nb_op = 1000000000;
+    const uint64_t nb_op = 10000000;
     char *og, *dest;
 #ifdef __KERNEL__
     og = kvmalloc(4096, GFP_KERNEL);
@@ -438,12 +710,16 @@ void test(void){
         } \
     }
 
-    TEST(memcmp, 5);
-    TEST(_memcmp, 5);
-    TEST(newlibc_memcmp, 5);
-    TEST(musl_memcmp, 5);
-    TEST(glibc_memcmp, 5);
-    TEST(__builtin_memcmp, 5);
+    //TEST(memcmp, 5);
+    //TEST(_memcmp, 5);
+    //TEST(newlibc_memcmp, 5);
+    //TEST(musl_memcmp, 5);
+    TEST(glibc_memcmp, 10);
+#ifndef __KERNEL__
+    TEST(__sse_memcmp, 10);
+    TEST(rte_memcmp, 10);
+#endif
+    TEST(__builtin_memcmp, 10);
 }
 
 #ifdef __KERNEL__

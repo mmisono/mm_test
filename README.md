@@ -5,12 +5,12 @@
 nix-shell '<nixpkgs>' -A linuxPackages.kernel.dev
 
 # user
-gcc -O2 -o hello.c
+gcc -O2 -mavx512f -o mm_test.c
 ./a.out
 
 # kernel module
 make -C $(nix-build -E '(import <nixpkgs> {}).linuxPackages.kernel.dev' --no-out-link)/lib/modules/*/build M=$(pwd) modules
-insmod ./hello.ko
+insmod ./mm_test.ko
 dmesg
 ```
 

@@ -466,6 +466,7 @@ static int __sse_memcmp(const uint16_t *a, const uint16_t *b, int half_words)
 
 #if 1
 // DPDK
+// https://patchwork.dpdk.org/project/dpdk/patch/1429716828-19012-2-git-send-email-rkerur@gmail.com/
 #include <immintrin.h>
 
 #define likely(condition) __builtin_expect(condition, 1)
@@ -710,10 +711,10 @@ void test(void){
         } \
     }
 
-    //TEST(memcmp, 5);
-    //TEST(_memcmp, 5);
-    //TEST(newlibc_memcmp, 5);
-    //TEST(musl_memcmp, 5);
+    TEST(memcmp, 10);
+    TEST(_memcmp, 10);
+    TEST(newlibc_memcmp, 10);
+    TEST(musl_memcmp, 10);
     TEST(glibc_memcmp, 10);
 #ifndef __KERNEL__
     TEST(__sse_memcmp, 10);

@@ -1,4 +1,15 @@
 # mmtest
+- memcmp benchmark
+
+## Variatns
+- `memcmp`: memcmp in string.h
+- `_memcmp`: memcmp in linux/tools/include/nolibc/string.h
+- `newlibc_memcmp`: newlib/libc/string/memcmp.c
+- `musl_memcmp`: https://git.musl-libc.org/cgit/musl/tree/src/string/memcmp.c
+- `glibc_memcmp`: glibc/string/memcmp.c
+- `__sse_memcmp` (SSE2): https://gist.github.com/karthick18/1361842
+- `rte_memcmp` (AVX512): https://patchwork.dpdk.org/project/dpdk/patch/1429716828-19012-2-git-send-email-rkerur@gmail.com/
+- `__builtin_memcmp`: gcc builtin (same as `memcmp`?)
 
 ## Compile
 ```
@@ -21,80 +32,162 @@ dmesg
 
 ### User
 ```
-           memcmp, 0, 7508059280,0
-           memcmp, 1, 7487105314,0
-           memcmp, 2, 7509339482,0
-           memcmp, 3, 7530509426,0
-           memcmp, 4, 7500724014,0
-           memcmp, 5, 7509820038,0
-          _memcmp, 0, 6040040466,0
-          _memcmp, 1, 4485490192,0
-          _memcmp, 2, 7009463326,0
-          _memcmp, 3,12007660718,0
-          _memcmp, 4,15018989300,0
-          _memcmp, 5,14109988700,0
-   newlibc_memcmp, 0, 5229470052,0
-   newlibc_memcmp, 1, 9012247622,0
-   newlibc_memcmp, 2,12044230904,0
-   newlibc_memcmp, 3,16941223646,0
-   newlibc_memcmp, 4,18062036144,0
-   newlibc_memcmp, 5,15023593576,0
-      musl_memcmp, 0, 4423117470,0
-      musl_memcmp, 1, 6229250076,0
-      musl_memcmp, 2, 7132367490,0
-      musl_memcmp, 3, 9078138278,0
-      musl_memcmp, 4,10691345322,0
-      musl_memcmp, 5,14989973630,0
-     glibc_memcmp, 0, 6834575084,0
-     glibc_memcmp, 1, 6942452534,0
-     glibc_memcmp, 2,10059180554,0
-     glibc_memcmp, 3,10716785256,0
-     glibc_memcmp, 4,12052863842,0
-     glibc_memcmp, 5,18172893800,0
- __builtin_memcmp, 0, 7131712328,0
- __builtin_memcmp, 1, 7133138106,0
- __builtin_memcmp, 2, 7132919124,0
- __builtin_memcmp, 3, 7135642722,0
- __builtin_memcmp, 4, 7132152626,0
- __builtin_memcmp, 5, 7134945756,0
+           memcmp, 0,   74943220,0
+           memcmp, 1,   75613218,0
+           memcmp, 2,   73780188,0
+           memcmp, 3,   75331590,0
+           memcmp, 4,   75963408,0
+           memcmp, 5,   75258058,0
+           memcmp, 6,   72358702,0
+           memcmp, 7,   76048524,0
+           memcmp, 8,   74609378,0
+           memcmp, 9,   75732212,0
+           memcmp,10,   75405228,0
+          _memcmp, 0,   64618060,0
+          _memcmp, 1,   40108866,0
+          _memcmp, 2,   70105436,0
+          _memcmp, 3,  100177220,0
+          _memcmp, 4,  130194448,0
+          _memcmp, 5,  129352952,0
+          _memcmp, 6,  150904432,0
+          _memcmp, 7,  160289268,0
+          _memcmp, 8,  132721138,0
+          _memcmp, 9,  140238626,0
+          _memcmp,10,  150366298,0
+   newlibc_memcmp, 0,   60754748,0
+   newlibc_memcmp, 1,   90130872,0
+   newlibc_memcmp, 2,  120474122,0
+   newlibc_memcmp, 3,  168679210,0
+   newlibc_memcmp, 4,  180603522,0
+   newlibc_memcmp, 5,  151037862,0
+   newlibc_memcmp, 6,  160653706,0
+   newlibc_memcmp, 7,  170748704,0
+   newlibc_memcmp, 8,   70099998,0
+   newlibc_memcmp, 9,  120228174,0
+   newlibc_memcmp,10,  140258998,0
+      musl_memcmp, 0,   27109388,0
+      musl_memcmp, 1,   53992084,0
+      musl_memcmp, 2,   88889826,0
+      musl_memcmp, 3,  109582626,0
+      musl_memcmp, 4,   98683134,0
+      musl_memcmp, 5,  100404058,0
+      musl_memcmp, 6,  110687832,0
+      musl_memcmp, 7,  130199514,0
+      musl_memcmp, 8,  140217838,0
+      musl_memcmp, 9,  150733014,0
+      musl_memcmp,10,  160240978,0
+     glibc_memcmp, 0,   70307574,0
+     glibc_memcmp, 1,   94410504,0
+     glibc_memcmp, 2,  120678448,0
+     glibc_memcmp, 3,  165070304,0
+     glibc_memcmp, 4,  180362786,0
+     glibc_memcmp, 5,  176026390,0
+     glibc_memcmp, 6,  213197062,0
+     glibc_memcmp, 7,  235452758,0
+     glibc_memcmp, 8,  182499852,0
+     glibc_memcmp, 9,  192595348,0
+     glibc_memcmp,10,  200517154,0
+     __sse_memcmp, 0,   60091446,0
+     __sse_memcmp, 1,   70107028,0
+     __sse_memcmp, 2,   80115576,0
+     __sse_memcmp, 3,  100159286,0
+     __sse_memcmp, 4,   80413878,0
+     __sse_memcmp, 5,   91041446,0
+     __sse_memcmp, 6,  100147902,0
+     __sse_memcmp, 7,  110173546,0
+     __sse_memcmp, 8,   60090424,0
+     __sse_memcmp, 9,   59958514,0
+     __sse_memcmp,10,   60779614,0
+       rte_memcmp, 0,   70097256,0
+       rte_memcmp, 1,   59049062,0
+       rte_memcmp, 2,   71234398,0
+       rte_memcmp, 3,   71437756,0
+       rte_memcmp, 4,   64533882,0
+       rte_memcmp, 5,   65894586,0
+       rte_memcmp, 6,   81115662,0
+       rte_memcmp, 7,   80145912,0
+       rte_memcmp, 8,   70475816,0
+       rte_memcmp, 9,   70808298,0
+       rte_memcmp,10,   73326774,0
+ __builtin_memcmp, 0,   74850638,0
+ __builtin_memcmp, 1,   71438928,0
+ __builtin_memcmp, 2,   73220436,0
+ __builtin_memcmp, 3,   74366264,0
+ __builtin_memcmp, 4,   63049092,0
+ __builtin_memcmp, 5,   69862346,0
+ __builtin_memcmp, 6,   76362026,0
+ __builtin_memcmp, 7,   73797816,0
+ __builtin_memcmp, 8,   76439368,0
+ __builtin_memcmp, 9,   73945308,0
+ __builtin_memcmp,10,   67519276,0
 ```
 
 ### Kernel
 ```
-[425535.352942]            memcmp, 0, 6058685024,0
-[425538.357912]            memcmp, 1, 9014902960,0
-[425542.033645]            memcmp, 2,11027195278,0
-[425546.212130]            memcmp, 3,12535456150,0
-[425550.887444]            memcmp, 4,14025942288,0
-[425556.597253]            memcmp, 5,17129426782,0
-[425558.830615]           _memcmp, 0, 6700084836,0
-[425560.505822]           _memcmp, 1, 5025617362,0
-[425562.857385]           _memcmp, 2, 7054685216,0
-[425565.868255]           _memcmp, 3, 9032609540,0
-[425569.217697]           _memcmp, 4,10048327776,0
-[425574.225104]           _memcmp, 5,15022222298,0
-[425576.126982]    newlibc_memcmp, 0, 5705629192,0
-[425579.465330]    newlibc_memcmp, 1,10015044260,0
-[425583.805214]    newlibc_memcmp, 2,13019652810,0
-[425589.471091]    newlibc_memcmp, 3,16997632202,0
-[425595.814058]    newlibc_memcmp, 4,19028903374,0
-[425603.169126]    newlibc_memcmp, 5,22065206664,0
-[425604.512399]       musl_memcmp, 0, 4029814842,0
-[425606.515666]       musl_memcmp, 1, 6009799480,0
-[425609.301751]       musl_memcmp, 2, 8358252372,0
-[425612.720297]       musl_memcmp, 3,10255638364,0
-[425617.062010]       musl_memcmp, 4,13025140608,0
-[425622.070183]       musl_memcmp, 5,15024519672,0
-[425624.115100]      glibc_memcmp, 0, 6134749366,0
-[425626.405960]      glibc_memcmp, 1, 6872578296,0
-[425628.953528]      glibc_memcmp, 2, 7642700366,0
-[425632.004636]      glibc_memcmp, 3, 9153325092,0
-[425636.003662]      glibc_memcmp, 4,11997078450,0
-[425639.758006]      glibc_memcmp, 5,11263031926,0
-[425641.558123]  __builtin_memcmp, 0, 5400347908,0
-[425644.581852]  __builtin_memcmp, 1, 9071184864,0
-[425648.587989]  __builtin_memcmp, 2,12018412372,0
-[425654.263165]  __builtin_memcmp, 3,17025527326,0
-[425660.164779]  __builtin_memcmp, 4,17704842598,0
-[425666.887317]  __builtin_memcmp, 5,20167617270,0
+[452441.878836]            memcmp, 0,   51875248,0
+[452441.908895]            memcmp, 1,   90164928,0
+[452441.949038]            memcmp, 2,  120425058,0
+[452442.004563]            memcmp, 3,  166572482,0
+[452442.064651]            memcmp, 4,  180261262,0
+[452442.129987]            memcmp, 5,  196001316,0
+[452442.201084]            memcmp, 6,  213290396,0
+[452442.279560]            memcmp, 7,  235423472,0
+[452442.303755]            memcmp, 8,   72580546,0
+[452442.340934]            memcmp, 9,  111534344,0
+[452442.387230]            memcmp,10,  138883690,0
+[452442.409403]           _memcmp, 0,   66516366,0
+[452442.426115]           _memcmp, 1,   50130946,0
+[452442.452828]           _memcmp, 2,   80134656,0
+[452442.490634]           _memcmp, 3,  113415256,0
+[452442.535688]           _memcmp, 4,  135159600,0
+[452442.592467]           _memcmp, 5,  170333386,0
+[452442.650033]           _memcmp, 6,  172694302,0
+[452442.713479]           _memcmp, 7,  190332462,0
+[452442.783611]           _memcmp, 8,  210392066,0
+[452442.860414]           _memcmp, 9,  230407304,0
+[452442.944105]           _memcmp,10,  251068710,0
+[452442.964087]    newlibc_memcmp, 0,   59942716,0
+[452442.997474]    newlibc_memcmp, 1,  100156968,0
+[452443.037634]    newlibc_memcmp, 2,  120476792,0
+[452443.084452]    newlibc_memcmp, 3,  140450000,0
+[452443.138023]    newlibc_memcmp, 4,  160708358,0
+[452443.211532]    newlibc_memcmp, 5,  220523780,0
+[452443.282126]    newlibc_memcmp, 6,  211778212,0
+[452443.358907]    newlibc_memcmp, 7,  230340142,0
+[452443.382331]    newlibc_memcmp, 8,   70268016,0
+[452443.429073]    newlibc_memcmp, 9,  140223432,0
+[452443.482683]    newlibc_memcmp,10,  160826492,0
+[452443.489425]       musl_memcmp, 0,   20221948,0
+[452443.506626]       musl_memcmp, 1,   51601632,0
+[452443.536875]       musl_memcmp, 2,   90742528,0
+[452443.574967]       musl_memcmp, 3,  114272362,0
+[452443.618392]       musl_memcmp, 4,  130273458,0
+[452443.681833]       musl_memcmp, 5,  190318248,0
+[452443.757862]       musl_memcmp, 6,  228086330,0
+[452443.824221]       musl_memcmp, 7,  199072484,0
+[452443.894332]       musl_memcmp, 8,  210328190,0
+[452443.971116]       musl_memcmp, 9,  230351070,0
+[452444.054609]       musl_memcmp,10,  250475534,0
+[452444.077172]      glibc_memcmp, 0,   67682872,0
+[452444.099188]      glibc_memcmp, 1,   66044814,0
+[452444.127075]      glibc_memcmp, 2,   83658398,0
+[452444.163991]      glibc_memcmp, 3,  110744782,0
+[452444.215898]      glibc_memcmp, 4,  155718892,0
+[452444.277310]      glibc_memcmp, 5,  184230190,0
+[452444.337749]      glibc_memcmp, 6,  181315622,0
+[452444.403025]      glibc_memcmp, 7,  195824844,0
+[452444.462563]      glibc_memcmp, 8,  178610636,0
+[452444.519321]      glibc_memcmp, 9,  170268418,0
+[452444.582916]      glibc_memcmp,10,  190783462,0
+[452444.602957]  __builtin_memcmp, 0,   60117444,0
+[452444.633008]  __builtin_memcmp, 1,   90149350,0
+[452444.669902]  __builtin_memcmp, 2,  110678872,0
+[452444.711785]  __builtin_memcmp, 3,  125647822,0
+[452444.758544]  __builtin_memcmp, 4,  140272902,0
+[452444.816252]  __builtin_memcmp, 5,  173121464,0
+[452444.880828]  __builtin_memcmp, 6,  193723708,0
+[452444.954680]  __builtin_memcmp, 7,  221552258,0
+[452444.982473]  __builtin_memcmp, 8,   83373458,0
+[452445.019289]  __builtin_memcmp, 9,  110445352,0
+[452445.063410]  __builtin_memcmp,10,  132358226,0
 ```
